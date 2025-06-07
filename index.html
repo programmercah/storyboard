@@ -1,75 +1,44 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <title>Prompt Generator</title>
-  <style>
-    textarea { width: 100%; height: 100px; margin-bottom: 10px; }
-    button { padding: 10px 20px; }
-  </style>
-</head>
-<body>
-  <h2>Masukkan Script</h2>
-  <textarea id="scriptInput" placeholder="Masukkan skrip di sini..."></textarea>
-  <button id="btnDescribe">Buat Deskripsi</button>
+<script>
+  const backendUrl = 'https://f714d261-dd36-4623-91ed-3bcd4273bd39-00-17ba2i7xw4h3v.pike.replit.dev';
 
-  <h2>Deskripsi Karakter</h2>
-  <textarea id="descriptionOutput" readonly></textarea>
+  document.getElementById('btnDescribe').addEventListener('click', async () => {
+    const script = document.getElementById('scriptInput').value.trim();
+    if (!script) {
+      alert('Tolong masukkan skrip dulu');
+      return;
+    }
 
-  <h2>Pecahan Kalimat</h2>
-  <textarea id="sentencesOutput" readonly></textarea>
-
-  <h2>Prompt Text-to-Image</h2>
-  <textarea id="promptsOutput" readonly></textarea>
-
-  <script>
-    const backendUrl = 'https://f714d261-dd36-4623-91ed-3bcd4273bd39-00-17ba2i7xw4h3v.pike.replit.dev/'; // ganti dengan link Replit kamu
-
-    document.getElementById('btnDescribe').addEventListener('click', async () => {
-      const script = document.getElementById('scriptInput').value.trim();
-      if (!script) {
-        alert('Tolong masukkan skrip dulu');
-        return;
-      }
-
-      // 1. Kirim ke backend untuk deskripsi karakter
-      const descResponse = await fetch(`${https://f714d261-dd36-4623-91ed-3bcd4273bd39-00-17ba2i7xw4h3v.pike.replit.dev/}/describe`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ script })
-      });
-
-      if (!descResponse.ok) {
-        alert('Gagal buat deskripsi');
-        return;
-      }
-
-      const descData = await descResponse.json();
-      if (descData.error) {
-        alert('Error: ' + descData.error);
-        return;
-      }
-
-      // Tampilkan deskripsi
-      document.getElementById('descriptionOutput').value = descData.description;
-
-      // 2. Pecah script jadi kalimat per baris
-      // Sederhana: pecah berdasarkan titik dan baris baru
-      const sentences = script
-        .split(/\.\s*|\n+/)
-        .map(s => s.trim())
-        .filter(s => s.length > 0);
-
-      document.getElementById('sentencesOutput').value = sentences.join('\n');
-
-      // 3. Buat prompt text-to-image per kalimat, gabung deskripsi lengkap
-      const description = descData.description;
-      const prompts = sentences.map(sentence => 
-        `${description}, scene: ${sentence}`
-      );
-
-      document.getElementById('promptsOutput').value = prompts.join('\n\n');
+    const descResponse = await fetch(`${backendUrl}/describe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ script })
     });
-  </script>
-</body>
-</html>
+
+    if (!descResponse.ok) {
+      alert('Gagal buat deskripsi');
+      return;
+    }
+
+    const descData = await descResponse.json();
+    if (descData.error) {
+      alert('Error: ' + descData.error);
+      return;
+    }
+
+    document.getElementById('descriptionOutput').value = descData.description;
+
+    const sentences = script
+      .split(/\.\s*|\n+/)
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
+
+    document.getElementById('sentencesOutput').value = sentences.join('\n');
+
+    const description = descData.description;
+    const prompts = sentences.map(sentence => 
+      `${description}, scene: ${sentence}`
+    );
+
+    document.getElementById('promptsOutput').value = prompts.join('\n\n');
+  });
+</script>
