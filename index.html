@@ -3,19 +3,35 @@
   <head>
     <title>Prompt Generator</title>
     <meta charset="UTF-8" />
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 600px;
+        margin: 40px auto;
+      }
+      textarea, button {
+        width: 100%;
+        margin-top: 10px;
+        font-size: 16px;
+      }
+    </style>
   </head>
   <body>
     <h1>Prompt Generator</h1>
-    <textarea id="input" rows="5" cols="40" placeholder="Masukkan ide..."></textarea>
-    <br />
-    <button onclick="generate()">Generate</button>
+    <textarea id="input" rows="4" placeholder="Masukkan ide atau topik..."></textarea>
+    <button onclick="generate()">Generate Prompt</button>
+    <h3>Hasil:</h3>
     <p id="output"></p>
 
     <script>
       function generate() {
-        const input = document.getElementById("input").value;
-        const prompt = `Tolong buatkan prompt AI berdasarkan: ${input}`;
-        document.getElementById("output").textContent = prompt;
+        const input = document.getElementById('input').value.trim();
+        if (!input) {
+          alert('Isi dulu dong!');
+          return;
+        }
+        const prompt = `Tolong buatkan prompt AI yang kreatif dan spesifik berdasarkan topik berikut: "${input}"`;
+        document.getElementById('output').textContent = prompt;
       }
     </script>
   </body>
