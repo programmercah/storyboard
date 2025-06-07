@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Prompt Generator</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Prompt Generator</h1>
+    <textarea id="input" rows="5" cols="40" placeholder="Masukkan ide..."></textarea>
+    <br />
+    <button onclick="generate()">Generate</button>
+    <p id="output"></p>
+
+    <script>
+      function generate() {
+        const input = document.getElementById("input").value;
+        const prompt = `Tolong buatkan prompt AI berdasarkan: ${input}`;
+        document.getElementById("output").textContent = prompt;
+      }
+    </script>
+  </body>
+</html>
