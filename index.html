@@ -23,7 +23,7 @@
   <textarea id="promptsOutput" readonly></textarea>
 
   <script>
-    const backendUrl = 'https://namareplitkamu.repl.co'; // ganti dengan link Replit kamu
+    const backendUrl = 'https://f714d261-dd36-4623-91ed-3bcd4273bd39-00-17ba2i7xw4h3v.pike.replit.dev/'; // ganti dengan link Replit kamu
 
     document.getElementById('btnDescribe').addEventListener('click', async () => {
       const script = document.getElementById('scriptInput').value.trim();
@@ -33,7 +33,7 @@
       }
 
       // 1. Kirim ke backend untuk deskripsi karakter
-      const descResponse = await fetch(`${https://f714d261-dd36-4623-91ed-3bcd4273bd39-00-17ba2i7xw4h3v.pike.replit.dev/}/describe`, {
+      const descResponse = await fetch(`${backendUrl}/describe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ script })
