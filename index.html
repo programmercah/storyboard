@@ -1,38 +1,95 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Prompt Generator</title>
-    <meta charset="UTF-8" />
-    <style>
-      body {
-        font-family: sans-serif;
-        max-width: 600px;
-        margin: 40px auto;
-      }
-      textarea, button {
-        width: 100%;
-        margin-top: 10px;
-        font-size: 16px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Prompt Generator</h1>
-    <textarea id="input" rows="4" placeholder="Masukkan ide atau topik..."></textarea>
-    <button onclick="generate()">Generate Prompt</button>
-    <h3>Hasil:</h3>
-    <p id="output"></p>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prompt Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+    textarea {
+      width: 100%;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      font-size: 15px;
+      padding: 10px;
+    }
+    button {
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+    h2 {
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Prompt Generator</h1>
 
-    <script>
-      function generate() {
-        const input = document.getElementById('input').value.trim();
-        if (!input) {
-          alert('Isi dulu dong!');
-          return;
-        }
-        const prompt = `Tolong buatkan prompt AI yang kreatif dan spesifik berdasarkan topik berikut: "${input}"`;
-        document.getElementById('output').textContent = prompt;
-      }
-    </script>
-  </body>
+  <!-- Input Script -->
+  <h2>1. Masukkan Skrip</h2>
+  <textarea id="scriptInput" rows="8" placeholder="Masukkan skrip di sini..."></textarea>
+  <button onclick="generateDescription()">Buat Deskripsi Karakter</button>
+
+  <!-- Hasil Deskripsi -->
+  <h2>2. Deskripsi Karakter</h2>
+  <textarea id="descriptionOutput" rows="6" placeholder="Hasil deskripsi karakter akan muncul di sini..."></textarea>
+
+  <!-- Kalimat Per Baris -->
+  <h2>3. Pecah Kalimat per Baris</h2>
+  <button onclick="splitScript()">Pecah Kalimat</button>
+  <textarea id="splitOutput" rows="8" placeholder="Hasil pecahan skrip..."></textarea>
+
+  <!-- Prompt per Kalimat -->
+  <h2>4. Prompt Text-to-Image</h2>
+  <button onclick="generatePrompts()">Buat Prompt Gambar</button>
+  <textarea id="finalPrompts" rows="10" placeholder="Prompt siap pakai..."></textarea>
+
+  <script>
+    // Dummy deskripsi
+    function generateDescription() {
+      const script = document.getElementById("scriptInput").value.trim();
+      if (!script) return alert("Masukkan skrip dulu.");
+
+      // Nanti ganti pakai API Gemini
+      const dummyDescription = `
+Nama Tokoh: Andi
+Wajah: Muda, rambut hitam berponi, mata tajam
+Pakaian: Kemeja putih dengan jas abu-abu
+Tempat: Kelas SMA, meja dan papan tulis di belakang
+Waktu: Pagi hari, cahaya matahari masuk dari jendela
+      `.trim();
+
+      document.getElementById("descriptionOutput").value = dummyDescription;
+    }
+
+    function splitScript() {
+      const script = document.getElementById("scriptInput").value.trim();
+      if (!script) return alert("Masukkan skrip dulu.");
+
+      // Pecah berdasarkan titik, tanda seru, atau newline
+      const sentences = script
+        .split(/[\n.!?]+/)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      document.getElementById("splitOutput").value = sentences.join('\n');
+    }
+
+    function generatePrompts() {
+      const desc = document.getElementById("descriptionOutput").value.trim();
+      const lines = document.getElementById("splitOutput").value.trim().split('\n').filter(Boolean);
+
+      if (!desc || lines.length === 0) return alert("Isi deskripsi dan pecahan kalimat dulu.");
+
+      const prompts = lines.map(line => `Gambarkan adegan: "${line}". Detail: ${desc}`).join('\n\n');
+      document.getElementById("finalPrompts").value = prompts;
+    }
+  </script>
+</body>
 </html>
